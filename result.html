@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>분할 결과</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Pretendard', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(45deg, #e0c3fc, #8ec5fc);
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #444;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            padding: 1rem;
+        }
+
+        .tile-card {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 1rem;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .tile-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .preview-image {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .download-link {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            color: #444;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .download-link:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .back-button {
+            display: block;
+            width: fit-content;
+            margin: 2rem auto;
+            padding: 1rem 2rem;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            color: #444;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .download-all-button {
+            padding: 1rem 2rem;
+            background: rgba(142, 197, 252, 0.5);  /* 파스텔 블루 */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 10px;
+            color: #444;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .download-all-button:hover {
+            background: rgba(142, 197, 252, 0.6);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>분할 완료!</h1>
+        <div class="grid-container">
+            {% for i in range(total_tiles) %}
+                <div class="tile-card">
+                    <img src="{{ preview_urls[i] }}" class="preview-image" alt="분할된 이미지 {{ i + 1 }}">
+                    <a href="{{ url_for('download_tile', tile_index=i) }}" 
+                       class="download-link" 
+                       download="tile_{{ i }}.png">
+                        조각 {{ i + 1 }} 다운로드
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="button-container">
+            <a href="{{ url_for('download_all') }}" 
+               class="download-all-button">
+                모든 이미지 다운로드 (ZIP)
+            </a>
+            <a href="{{ url_for('cleanup_temp_files') }}" 
+               class="back-button">
+                처음으로 돌아가기
+            </a>
+        </div>
+    </div>
+</body>
+</html>
